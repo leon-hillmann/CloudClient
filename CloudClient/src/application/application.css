@@ -6,3 +6,13 @@
 	-fx-background-color:dodgerblue;
 	-fx-text-fill:white ;
 }
+
+.button:file{
+	-fx-background-radius: 0;
+	-fx-border-radius: 0;
+	-fx-border-width: 0;
+	-fx-border-color: transparent;
+	-fx-background-color:transparent;
+	-fx-text-fill:black ;
+	-fx-font-size: 20;
+}

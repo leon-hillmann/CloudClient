@@ -15,26 +15,25 @@ import javafx.scene.layout.StackPane;
 public class Main extends Application {
 	Button bu_connect = new Button("Connect");
 	ConnectionSocket connection;
+	BrowserController browser;
+	CloudFile rootDirectory;
 	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
 			connection = new ConnectionSocket("raspberrypi", 1337);
 			
-			bu_connect.setOnAction(e ->{
-
-			});
-			
+			rootDirectory = getServerRoot();
 			primaryStage.setOnCloseRequest(e ->{
 				connection.close();
 			});
-			
-			StackPane root = new StackPane();
-			root.getChildren().add(bu_connect);
-			Scene scene = new Scene(root,400,400);
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-			primaryStage.setScene(scene);
+			browser = new BrowserController();
+			Scene browserScene = new Scene(browser);
+			browserScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			primaryStage.setScene(browserScene);
 			primaryStage.show();
+			
+			browser.setCurrentFolder(rootDirectory);
 		} catch(Exception e) {
 			e.printStackTrace();
 			System.exit(0);
