@@ -12,22 +12,52 @@ public class CloudFile implements Serializable{
 	
 	private File file;
 	List<CloudFile> dirContent = null;
-
+	private FileType type;
+	private CloudFile parent = null;
+	
 	public CloudFile(File f){
 		System.out.println("Init CloudFile: " + f.getAbsolutePath());
 		file = f;
 		if(file.isDirectory()){
+			type = FileType.DIRECTORY;
 			File [] files = file.listFiles();
 			if(files != null){
 				dirContent = new ArrayList<CloudFile>();
 				System.out.println(files.length);
 				for(File fi : files){
-//					if(fi.isHidden())
-//						continue;
-					dirContent.add(new CloudFile(fi));
+					dirContent.add(new CloudFile(fi, this));
 				}
 			}
+		}else{
+			type = FileType.UNKNOWN;
 		}
+	}
+	
+	public CloudFile(File f, CloudFile parent){
+		this.parent = parent;
+		System.out.println("Init CloudFile: " + f.getAbsolutePath() + " parent: " + parent.get().getAbsolutePath());
+		file = f;
+		if(file.isDirectory()){
+			type = FileType.DIRECTORY;
+			File [] files = file.listFiles();
+			if(files != null){
+				dirContent = new ArrayList<CloudFile>();
+				System.out.println(files.length);
+				for(File fi : files){
+					dirContent.add(new CloudFile(fi, this));
+				}
+			}
+		}else{
+			type = FileType.UNKNOWN;
+		}
+	}
+	
+	public CloudFile getParent(){
+		return parent;
+	}
+	
+	public FileType getType(){
+		return type;
 	}
 
 	public List<CloudFile> getDirectoryContent(){

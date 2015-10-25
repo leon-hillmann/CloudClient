@@ -7,7 +7,7 @@
 
 <fx:root prefHeight="249.0" prefWidth="210.0" type="AnchorPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Button mnemonicParsing="false" stylesheets="@application.css" text="Button" />
+      <Button fx:id="back" mnemonicParsing="false" stylesheets="@application.css" text="Button" />
       <FlowPane fx:id="content" layoutY="26.0" orientation="VERTICAL" prefHeight="223.0" prefWidth="210.0" />
    </children>
 </fx:root>
