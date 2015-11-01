@@ -17,7 +17,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			connection = new ConnectionSocket("raspberrypi", 1337);
+			connection = new ConnectionSocket("pizzakatze.no-ip.org", 1337);
 			
 			rootDirectory = getServerRoot();
 			primaryStage.setOnCloseRequest(e ->{
