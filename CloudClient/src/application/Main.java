@@ -1,5 +1,8 @@
 package application;
 
+import java.io.IOException;
+import java.security.PublicKey;
+
 import application.net.CloudFile;
 import application.net.ConnectionSocket;
 import javafx.application.Application;
@@ -14,12 +17,21 @@ public class Main extends Application {
 	BrowserController browser;
 	CloudFile rootDirectory;
 	
+	PublicKey serv_pub;
+	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
 			connection = new ConnectionSocket("pizzakatze.no-ip.org", 1337);
 			
+			serv_pub = getServerKey();
+			System.out.println(serv_pub.toString());
+			
 			rootDirectory = getServerRoot();
+			if(rootDirectory == null){
+				System.out.println("root is null");
+				System.exit(0);
+			}
 			primaryStage.setOnCloseRequest(e ->{
 				connection.close();
 			});
@@ -36,22 +48,25 @@ public class Main extends Application {
 		}
 	}
 	
-	public CloudFile getServerRoot(){
+	private PublicKey getServerKey(){
+		return (PublicKey) getObjectFromServer(Command.PUBLIC_KEY_REQUEST);
+	}
+	
+	private Object getObjectFromServer(Command c){
 		try {
-			Object o = connection.sendObjectrCommand(Command.GET_ROOT_FILE);
-			if(o != null){
-				if(o instanceof CloudFile){
-					CloudFile f = (CloudFile) o;
-					f.printAllSubFiles();
-					return f;
-				}
-			}else
+			Object o = connection.sendObjectrCommand(c);
+			if(o == null)
 				System.out.println("Received null");
-		} catch (Exception e1) {
+			return o;
+		} catch (ClassNotFoundException | IOException e) {
 			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public CloudFile getServerRoot(){
+		return (CloudFile) getObjectFromServer(Command.GET_ROOT_FILE);
 	}
 	
 	public static void main(String[] args) {

@@ -39,6 +39,8 @@ public class BrowserController extends AnchorPane{
 	}
 	
 	public void setCurrentFolder(CloudFile directory){
+		if(directory.getType() != FileType.DIRECTORY)
+			return;
 		content.getChildren().removeAll(content.getChildren());
 		for(CloudFile f : directory.getDirectoryContent()){
 			Button button = new Button(f.get().getName());

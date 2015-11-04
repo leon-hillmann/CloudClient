@@ -14,11 +14,13 @@ public class ConnectionSocket {
 	private Socket socket;
 	private DataInputStream dis;
 	private DataOutputStream dos;
+	private ObjectInputStream ois;
 	
 	public ConnectionSocket(String ipAddress, int port) throws UnknownHostException, IOException{
 		socket = new Socket(ipAddress, port);
 		dos = new DataOutputStream(socket.getOutputStream());
 		dis = new DataInputStream(socket.getInputStream());
+		ois = new ObjectInputStream(dis);
 	}
 	
 	private Command readCommand() throws IOException{
@@ -37,7 +39,6 @@ public class ConnectionSocket {
 		dos.flush();
 		Command server_cmd = readCommand();
 		if(server_cmd == Command.OBJECT_TRANSMISSION){
-			ObjectInputStream ois = new ObjectInputStream(dis);
 			Object o = ois.readObject();
 			return o;
 		}else if(server_cmd == Command.UNKNOWN){

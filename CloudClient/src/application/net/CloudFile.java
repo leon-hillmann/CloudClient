@@ -3,6 +3,7 @@ package application.net;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class CloudFile implements Serializable{
@@ -20,8 +21,8 @@ public class CloudFile implements Serializable{
 		if(file.isDirectory()){
 			type = FileType.DIRECTORY;
 			File [] files = file.listFiles();
+			dirContent = new ArrayList<CloudFile>();
 			if(files != null){
-				dirContent = new ArrayList<CloudFile>();
 				System.out.println(files.length);
 				for(File fi : files){
 					dirContent.add(new CloudFile(fi, this));
