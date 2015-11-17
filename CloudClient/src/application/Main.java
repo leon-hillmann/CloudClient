@@ -58,26 +58,31 @@ public class Main extends Application {
 	}
 	
 	private void keyExchange() throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IOException{
+		//Keys generieren
 		System.out.println("Key exchange");
 		System.out.println("Generating AES key");
 		KeyGenerator aesgen = KeyGenerator.getInstance("AES");
 		SecretKey aes_key = aesgen.generateKey();
 		
+		//Public Key des Servers anfordern
 		System.out.println("Requesting server key");
 		PublicKey spub = getServerKey();
-		connection.waitUntilOK();
+		
+		//Public Key anwenden
 		System.out.println("Encrypting connection");
 		Cipher c = Cipher.getInstance("RSA");
 		c.init(Cipher.ENCRYPT_MODE, spub);
 		connection.setOutputCipher(c);
+		
+		
+		//AES-Key senden
 		System.out.println("Sending key");
 		connection.sendCommand(Command.AES_TRANSMISSION);
 		connection.sendObject(aes_key);
 		
-		connection.waitUntilOK();
-		
+		//AES-Key anwenden
 		System.out.println("Encrypting the connection (AES)");
-		Cipher cin = Cipher.getInstance("AES");
+		Cipher cin = Cipher.getInstance("AES"); //Hier ist AES wichtig!
 		Cipher cout = Cipher.getInstance("AES");
 		cin.init(Cipher.DECRYPT_MODE, aes_key);
 		cout.init(Cipher.ENCRYPT_MODE, aes_key);

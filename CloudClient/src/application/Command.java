@@ -1,7 +1,7 @@
 package application;
 
 public enum Command {
-	UNKNOWN(-1), CLOSE(0),GET_ROOT_FILE(1), OBJECT_TRANSMISSION(2), PUBLIC_KEY_REQUEST(3), AES_TRANSMISSION(4), OK(5);
+	UNKNOWN(-1), CLOSE(0),GET_ROOT_FILE(1), OBJECT_TRANSMISSION(2), PUBLIC_KEY_REQUEST(3), AES_TRANSMISSION(4);
 	
 	private int code;
 	Command(int cmd){
